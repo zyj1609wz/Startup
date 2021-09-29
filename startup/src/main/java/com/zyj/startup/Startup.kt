@@ -15,7 +15,7 @@ abstract class Startup {
     //是不是在主线程初始化
     abstract fun callCreateOnMainThread(): Boolean
 
-    abstract fun dependencies(): List<Class<out Startup>>?
+    open fun dependencies(): List<Class<out Startup>>? = null
 
     //组id
     internal var groupId: Int = 0
