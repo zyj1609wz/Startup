@@ -19,7 +19,7 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        com.zyj.startup.StartupManager
+        StartupManager
             .addGroup {
                 it.add(SDK1())
                 it.add(SDK2())
@@ -29,7 +29,7 @@ class App : Application() {
                 it.add(SDK4())
                 it.add(SDK5())
             }
-            .cost(object : com.zyj.startup.TimeListener {
+            .cost(object : TimeListener {
 
                 override fun itemCost(name: String, time: Long) {
                     Log.d("startup-", "itemCost:$name time:$time")
