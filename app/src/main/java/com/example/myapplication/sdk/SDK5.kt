@@ -1,4 +1,4 @@
-package com.example.myapplication
+package com.example.myapplication.sdk
 
 import android.content.Context
 import com.zyj.startup.Startup
@@ -8,7 +8,7 @@ import com.zyj.startup.Startup
  * @time : 2021/9/27
  * @desc :
  */
-class SDK5 : Startup {
+class SDK5 : Startup() {
 
     override fun create(context: Context) {
         //模拟初始化时间
@@ -17,4 +17,8 @@ class SDK5 : Startup {
 
     //主线程
     override fun callCreateOnMainThread(): Boolean = false
+
+    override fun dependencies(): List<Class<out Startup>>? {
+        return listOf(SDK1::class.java)
+    }
 }

@@ -2,10 +2,7 @@ package com.example.myapplication
 
 import android.app.Application
 import android.util.Log
-import com.example.myapplication.sdk.SDK1
-import com.example.myapplication.sdk.SDK2
-import com.example.myapplication.sdk.SDK3
-import com.example.myapplication.sdk.SDK4
+import com.example.myapplication.sdk.*
 import com.zyj.startup.StartupManager
 import com.zyj.startup.TimeListener
 
@@ -27,6 +24,8 @@ class App : Application() {
             .addGroup {
                 it.add(SDK3())
                 it.add(SDK4())
+            }
+            .addGroup {
                 it.add(SDK5())
             }
             .cost(object : TimeListener {

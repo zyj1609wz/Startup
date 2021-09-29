@@ -12,9 +12,10 @@ object StartupManager {
 
     private val groupResult = mutableListOf<Group>() //分组
     private var timeListener: TimeListener? = null
+    internal val startupIdMap = mutableMapOf<String, Int>()  //存所有任务groupId
 
     fun addGroup(block: (Group) -> Unit): StartupManager {
-        val gr = Group()
+        val gr = Group(groupResult.size)
         block(gr)
         groupResult.add(gr)
         return this

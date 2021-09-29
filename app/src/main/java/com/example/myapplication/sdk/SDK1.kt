@@ -8,7 +8,7 @@ import com.zyj.startup.Startup
  * @time : 2021/9/27
  * @desc :
  */
-class SDK1 : Startup {
+class SDK1 : Startup() {
 
     override fun create(context: Context) {
         //模拟初始化时间
@@ -17,4 +17,8 @@ class SDK1 : Startup {
 
     //可以在子线程初始化
     override fun callCreateOnMainThread(): Boolean = false
+
+    override fun dependencies(): List<Class<out Startup>>? {
+        return null
+    }
 }
