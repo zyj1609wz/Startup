@@ -1,6 +1,7 @@
 package com.zyj.startup
 
 import android.content.Context
+import java.util.concurrent.Executors
 import kotlin.system.measureTimeMillis
 
 /**
@@ -13,6 +14,7 @@ object StartupManager {
     private val groupResult = mutableListOf<Group>() //分组
     private var timeListener: TimeListener? = null
     internal val startupIdMap = mutableMapOf<String, Int>()  //存所有任务groupId
+    internal val executor = Executors.newCachedThreadPool()
 
     fun addGroup(block: (Group) -> Unit): StartupManager {
         val gr = Group(groupResult.size)
@@ -26,6 +28,9 @@ object StartupManager {
         return this
     }
 
+    /**
+     * 开始执行
+     */
     fun start(context: Context) {
         val allTime = measureTimeMillis {
             groupResult.forEachIndexed { index, group ->
@@ -36,6 +41,15 @@ object StartupManager {
             }
         }
         timeListener?.allCost(allTime)
+        clear()
+    }
+
+    /**
+     * 释放资源
+     */
+    private fun clear() {
+        groupResult.clear()
+        startupIdMap.clear()
     }
 }
 

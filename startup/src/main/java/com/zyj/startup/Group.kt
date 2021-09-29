@@ -2,7 +2,6 @@ package com.zyj.startup
 
 import android.content.Context
 import java.util.concurrent.CountDownLatch
-import java.util.concurrent.Executors
 import java.util.concurrent.atomic.AtomicInteger
 import kotlin.system.measureTimeMillis
 
@@ -17,7 +16,7 @@ class Group(private val id: Int) {
     private val ioResult = mutableListOf<Startup>()   //子线程列表
     private val workTaskCount = AtomicInteger()  //运行在子线程的任务个数
     private val countDownLatch by lazy { CountDownLatch(workTaskCount.get()) }
-    private val executor = Executors.newCachedThreadPool()
+
 
     /**
      * 添加一个任务
@@ -35,10 +34,13 @@ class Group(private val id: Int) {
         }
     }
 
-    fun execute(context: Context, timeListener: TimeListener?) {
+    /**
+     * 执行任务
+     */
+    internal fun execute(context: Context, timeListener: TimeListener?) {
         //子线程
         ioResult.forEach {
-            executor.execute {
+            StartupManager.executor.execute {
                 checkDependenciesLegal(it)
                 val costTime = measureTimeMillis {
                     it.create(context)
