@@ -1,7 +1,7 @@
 package com.example.myapplication
 
 import android.content.Context
-import com.example.myapplication.startup.Startup
+import com.zyj.startup.Startup
 
 /**
  * @author : zhaoyanjun

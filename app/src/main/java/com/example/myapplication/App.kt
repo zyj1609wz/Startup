@@ -6,8 +6,8 @@ import com.example.myapplication.sdk.SDK1
 import com.example.myapplication.sdk.SDK2
 import com.example.myapplication.sdk.SDK3
 import com.example.myapplication.sdk.SDK4
-import com.example.myapplication.startup.StartupManager
-import com.example.myapplication.startup.TimeListener
+import com.zyj.startup.StartupManager
+import com.zyj.startup.TimeListener
 
 /**
  * @author : zhaoyanjun
@@ -19,7 +19,7 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        StartupManager
+        com.zyj.startup.StartupManager
             .addGroup {
                 it.add(SDK1())
                 it.add(SDK2())
@@ -29,7 +29,7 @@ class App : Application() {
                 it.add(SDK4())
                 it.add(SDK5())
             }
-            .cost(object : TimeListener {
+            .cost(object : com.zyj.startup.TimeListener {
 
                 override fun itemCost(name: String, time: Long) {
                     Log.d("startup-", "itemCost:$name time:$time")

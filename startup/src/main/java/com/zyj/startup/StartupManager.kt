@@ -1,4 +1,4 @@
-package com.example.myapplication.startup
+package com.zyj.startup
 
 import android.content.Context
 import kotlin.system.measureTimeMillis
