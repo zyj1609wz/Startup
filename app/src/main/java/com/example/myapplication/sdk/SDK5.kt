@@ -12,7 +12,7 @@ class SDK5 : Startup() {
 
     override fun create(context: Context) {
         //模拟初始化时间
-        Thread.sleep(80)
+        Thread.sleep(800)
     }
 
     //主线程
@@ -20,5 +20,9 @@ class SDK5 : Startup() {
 
     override fun dependencies(): List<Class<out Startup>>? {
         return listOf(SDK1::class.java)
+    }
+
+    override fun waitOnMainThread(): Boolean {
+        return false
     }
 }

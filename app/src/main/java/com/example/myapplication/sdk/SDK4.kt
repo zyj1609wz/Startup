@@ -21,4 +21,8 @@ class SDK4 : Startup() {
     override fun dependencies(): List<Class<out Startup>>? {
         return listOf(SDK2::class.java)
     }
+
+    override fun waitOnMainThread(): Boolean {
+        return false
+    }
 }

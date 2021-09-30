@@ -16,9 +16,13 @@ class SDK3 : Startup() {
     }
 
     //主线程
-    override fun callCreateOnMainThread(): Boolean = false
+    override fun callCreateOnMainThread(): Boolean = true
 
     override fun dependencies(): List<Class<out Startup>>? {
         return listOf(SDK2::class.java)
+    }
+
+    override fun waitOnMainThread(): Boolean {
+        return false
     }
 }

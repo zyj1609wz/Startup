@@ -1,6 +1,7 @@
 package com.zyj.startup
 
 import android.content.Context
+import java.util.concurrent.CountDownLatch
 
 /**
  * @author : zhaoyanjun
@@ -16,6 +17,23 @@ abstract class Startup {
     abstract fun callCreateOnMainThread(): Boolean
 
     open fun dependencies(): List<Class<out Startup>>? = null
+
+    abstract fun waitOnMainThread(): Boolean
+
+    private val countDownLatch by lazy { CountDownLatch(1) }
+
+    internal fun execute(context: Context) {
+        create(context)
+        countDownLatch.countDown()
+    }
+
+    internal fun await() {
+        runCatching {
+            countDownLatch.await()
+        }.onFailure {
+            it.printStackTrace()
+        }
+    }
 
     //组id
     internal var groupId: Int = 0

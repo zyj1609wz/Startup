@@ -21,4 +21,8 @@ class SDK2 : Startup() {
     override fun dependencies(): List<Class<out Startup>>? {
         return null
     }
+
+    override fun waitOnMainThread(): Boolean {
+        return false
+    }
 }
