@@ -5,24 +5,24 @@ android 启动库
 
 Add it in your root build.gradle at the end of repositories:
 
-```aidl
+```java
 allprojects {
-		repositories {
-			...
-			maven { url 'https://jitpack.io' }
-		}
+     repositories {
+	   ...
+	   maven { url 'https://jitpack.io' }
+     }
 }
 ```
 
 Add the dependency
 
-```aidl
+```java
 implementation 'com.github.zyj1609wz:Startup:2.3.0'
 ```
 
 ## 使用方法
 
-```aidl
+```java
 StartupManager
             .addGroup {
                 it.add(SDK1())
@@ -49,3 +49,6 @@ StartupManager
             })
             .start(this)
 ```
+
+## 相关博客 
+[Java CountDownLatch的两种常用场景](https://blog.csdn.net/zhaoyanjun6/article/details/120506758)
