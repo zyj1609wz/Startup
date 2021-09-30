@@ -16,12 +16,12 @@ object StartupManager {
     private var timeListener: TimeListener? = null
     internal val startupIdMap = mutableMapOf<String, Int>()  //存所有任务groupId
     internal val allStartup = mutableMapOf<String, Startup>() //存所有任务groupId
-    private val executor = Executors.newCachedThreadPool()
     internal val mainResult = mutableListOf<Startup>() //主线程列表
     internal val ioResult = mutableListOf<Startup>()   //子线程列表
     internal val waitOnMainThreadResult = mutableListOf<Startup>()   //所有等主线程的任务
     private val groupCount = AtomicInteger()  //组id
     private val countDownLatch by lazy { CountDownLatch(mainResult.size + ioResult.size) }
+    private val executor by lazy { Executors.newCachedThreadPool() }
 
     fun addGroup(block: (Group) -> Unit): StartupManager {
         val group = Group(groupCount.getAndIncrement())
@@ -49,7 +49,7 @@ object StartupManager {
                 val costTime = measureTimeMillis {
                     it.execute(context)
                 }
-                timeListener?.itemCost(it.getAliasName(), costTime, Thread.currentThread().name)
+                timeListener?.itemCost(it.aliasName, costTime, Thread.currentThread().name)
                 countDownLatch.countDown()
             }
         }
@@ -64,15 +64,13 @@ object StartupManager {
             val costTime = measureTimeMillis {
                 it.execute(context)
             }
-            timeListener?.itemCost(it.getAliasName(), costTime, Thread.currentThread().name)
+            timeListener?.itemCost(it.aliasName, costTime, Thread.currentThread().name)
             countDownLatch.countDown()
         }
 
         //等待所有等待主线程的任务执行完
         waitOnMainThreadResult.forEach {
-            runCatching {
-                it.await()
-            }.onFailure { it.printStackTrace() }
+            it.await()
         }
         timeListener?.allCost(System.currentTimeMillis() - start)
         executeClear()
@@ -88,7 +86,7 @@ object StartupManager {
             if (startup.groupId == 0) {
                 return
             }
-            throw Exception("${startup.getAliasName()} dependencies is illegal,Should be placed in the first group")
+            throw Exception("${startup.aliasName} dependencies is illegal,Should be placed in the first group")
         }
         var dependenciesMaxGroupId = 0
         dependencies.forEach { item ->
@@ -99,7 +97,7 @@ object StartupManager {
                 )
         }
         if (startup.groupId - dependenciesMaxGroupId != 1) {
-            throw Exception("${startup.getAliasName()} dependencies is illegal,Should be placed in the ${dependenciesMaxGroupId + 2}st group")
+            throw Exception("${startup.aliasName} dependencies is illegal,Should be placed in the ${dependenciesMaxGroupId + 2}st group")
         }
     }
 

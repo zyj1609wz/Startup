@@ -39,5 +39,7 @@ abstract class Startup {
     internal var groupId: Int = 0
 
     //别名
-    internal fun getAliasName(): String = javaClass.simpleName
+    internal val aliasName by lazy {
+        javaClass.simpleName
+    }
 }

@@ -13,8 +13,8 @@ class Group(private val id: Int) {
      */
     fun add(startup: Startup) {
         startup.groupId = id
-        StartupManager.startupIdMap[startup.getAliasName()] = id
-        StartupManager.allStartup[startup.getAliasName()] = startup
+        StartupManager.startupIdMap[startup.aliasName] = id
+        StartupManager.allStartup[startup.aliasName] = startup
         if (!startup.callCreateOnMainThread()) {
             //在子线程中运行
             StartupManager.ioResult.add(startup)
@@ -24,7 +24,6 @@ class Group(private val id: Int) {
         } else {
             //在主线程运行
             StartupManager.mainResult.add(startup)
-            StartupManager.waitOnMainThreadResult.add(startup)
         }
     }
 }
