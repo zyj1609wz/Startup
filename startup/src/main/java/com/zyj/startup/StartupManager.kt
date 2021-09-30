@@ -1,6 +1,7 @@
 package com.zyj.startup
 
 import android.content.Context
+import android.util.Log
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.Executors
 import java.util.concurrent.atomic.AtomicInteger
@@ -15,19 +16,17 @@ object StartupManager {
 
     private var timeListener: TimeListener? = null
     internal val startupIdMap = mutableMapOf<String, Int>()  //存所有任务groupId
-    internal val allStartup = mutableMapOf<String, Startup>() //  //存所有任务groupId
+    internal val allStartup = mutableMapOf<String, Startup>() //存所有任务groupId
     private val executor = Executors.newCachedThreadPool()
     internal val mainResult = mutableListOf<Startup>() //主线程列表
     internal val ioResult = mutableListOf<Startup>()   //子线程列表
     internal val waitOnMainThreadResult = mutableListOf<Startup>()   //所有等主线程的任务
     private val groupCount = AtomicInteger()  //组id
-
-    private val startupCount = AtomicInteger()  //运行在子线程的任务个数
-    private val countDownLatch by lazy { CountDownLatch(startupCount.get()) }
+    private val countDownLatch by lazy { CountDownLatch(mainResult.size + ioResult.size) }
 
     fun addGroup(block: (Group) -> Unit): StartupManager {
-        val gr = Group(groupCount.getAndIncrement())
-        block(gr)
+        val group = Group(groupCount.getAndIncrement())
+        block(group)
         return this
     }
 
@@ -50,9 +49,9 @@ object StartupManager {
                 }
                 val costTime = measureTimeMillis {
                     it.execute(context)
-                    countDownLatch.countDown()
                 }
-                timeListener?.itemCost(it.getAliasName(), costTime)
+                timeListener?.itemCost(it.getAliasName(), costTime, Thread.currentThread().name)
+                countDownLatch.countDown()
             }
         }
 
@@ -65,19 +64,19 @@ object StartupManager {
 
             val costTime = measureTimeMillis {
                 it.execute(context)
-                countDownLatch.countDown()
             }
-            timeListener?.itemCost(it.getAliasName(), costTime)
+            timeListener?.itemCost(it.getAliasName(), costTime, Thread.currentThread().name)
+            countDownLatch.countDown()
         }
 
         //等待所有等待主线程的任务执行完
         waitOnMainThreadResult.forEach {
             runCatching {
                 it.await()
-            }
+            }.onFailure { it.printStackTrace() }
         }
         timeListener?.allCost(System.currentTimeMillis() - start)
-        clear()
+        executeClear()
     }
 
     /**
@@ -108,17 +107,25 @@ object StartupManager {
     /**
      * 释放资源
      */
-    private fun clear() {
+    private fun executeClear() {
         executor.execute {
             runCatching {
+                //等待所有任务都执行完，才释放资源
                 countDownLatch.await()
-                startupIdMap.clear()
-                allStartup.clear()
-                mainResult.clear()
-                ioResult.clear()
-                waitOnMainThreadResult.clear()
-            }
+                clear()
+            }.onFailure { it.printStackTrace() }
         }
+    }
+
+    /**
+     * 数据置空
+     */
+    private fun clear() {
+        startupIdMap.clear()
+        allStartup.clear()
+        mainResult.clear()
+        ioResult.clear()
+        waitOnMainThreadResult.clear()
     }
 }
 

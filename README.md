@@ -17,10 +17,36 @@ allprojects {
 Add the dependency
 
 ```java
-implementation 'com.github.zyj1609wz:Startup:2.3.0'
+implementation 'com.github.zyj1609wz:Startup:2.4.0'
 ```
 
 ## 使用方法
+
+首先创建 Startup 实例
+
+```java
+class SDK1 : Startup() {
+
+    override fun create(context: Context) {
+        //模拟初始化时间
+        Thread.sleep(100)
+    }
+
+    //可以在子线程初始化
+    override fun callCreateOnMainThread(): Boolean = false
+
+    //依赖
+    override fun dependencies(): List<Class<out Startup>>? {
+        return null
+    }
+
+    //是否需要等待主线程
+    override fun waitOnMainThread(): Boolean {
+        return false
+    }
+}
+```
+然后添加任务管理
 
 ```java
 StartupManager
@@ -35,8 +61,8 @@ StartupManager
             }
             .cost(object : TimeListener {
 
-                override fun itemCost(name: String, time: Long) {
-                    Log.d("startup-", "itemCost:$name time:$time")
+                override fun itemCost(name: String, time: Long, threadName: String) {
+                    Log.d("startup-", "itemCost:$name time:$time threadName:$threadName")
                 }
 
                 override fun allCost(time: Long) {

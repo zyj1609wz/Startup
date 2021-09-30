@@ -23,6 +23,6 @@ class SDK4 : Startup() {
     }
 
     override fun waitOnMainThread(): Boolean {
-        return false
+        return true
     }
 }

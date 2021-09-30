@@ -28,8 +28,8 @@ class App : Application() {
             }
             .cost(object : TimeListener {
 
-                override fun itemCost(name: String, time: Long) {
-                    Log.d("startup-", "itemCost:$name time:$time")
+                override fun itemCost(name: String, time: Long, threadName: String) {
+                    Log.d("startup-", "itemCost:$name time:$time threadName:$threadName")
                 }
 
                 override fun allCost(time: Long) {

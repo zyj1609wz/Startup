@@ -18,10 +18,12 @@ class SDK1 : Startup() {
     //可以在子线程初始化
     override fun callCreateOnMainThread(): Boolean = false
 
+    //依赖
     override fun dependencies(): List<Class<out Startup>>? {
         return null
     }
 
+    //是否需要等待主线程
     override fun waitOnMainThread(): Boolean {
         return false
     }

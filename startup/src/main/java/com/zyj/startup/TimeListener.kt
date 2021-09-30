@@ -6,6 +6,6 @@ package com.zyj.startup
  * @desc : 耗时监听
  */
 interface TimeListener {
-    fun itemCost(name: String, time: Long)
+    fun itemCost(name: String, time: Long, threadName: String)
     fun allCost(time: Long)
 }
