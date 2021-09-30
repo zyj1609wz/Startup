@@ -17,7 +17,7 @@ allprojects {
 Add the dependency
 
 ```java
-implementation 'com.github.zyj1609wz:Startup:2.4.0'
+implementation 'com.github.zyj1609wz:Startup:2.5.0'
 ```
 
 ## 使用方法
