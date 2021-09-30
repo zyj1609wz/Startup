@@ -1,7 +1,6 @@
 package com.zyj.startup
 
 import android.content.Context
-import android.util.Log
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.Executors
 import java.util.concurrent.atomic.AtomicInteger
