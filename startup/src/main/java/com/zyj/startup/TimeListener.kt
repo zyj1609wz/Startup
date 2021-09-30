@@ -7,6 +7,5 @@ package com.zyj.startup
  */
 interface TimeListener {
     fun itemCost(name: String, time: Long)
-    fun groupCost(groupIndex: Int, time: Long)
     fun allCost(time: Long)
 }

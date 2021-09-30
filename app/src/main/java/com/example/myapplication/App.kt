@@ -32,10 +32,6 @@ class App : Application() {
                     Log.d("startup-", "itemCost:$name time:$time")
                 }
 
-                override fun groupCost(groupIndex: Int, time: Long) {
-                    Log.d("startup-", "groupCost:$groupIndex time:$time")
-                }
-
                 override fun allCost(time: Long) {
                     Log.d("startup-", "allCost:$time")
                 }
