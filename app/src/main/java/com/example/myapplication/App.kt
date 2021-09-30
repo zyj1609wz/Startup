@@ -24,8 +24,6 @@ class App : Application() {
             .addGroup {
                 it.add(SDK3())
                 it.add(SDK4())
-            }
-            .addGroup {
                 it.add(SDK5())
             }
             .cost(object : TimeListener {

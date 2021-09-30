@@ -85,7 +85,7 @@ class Group(private val id: Int) {
                     StartupManager.startupIdMap[item.simpleName] ?: 0
                 )
         }
-        if (startup.groupId <= dependenciesMaxGroupId) {
+        if (startup.groupId - dependenciesMaxGroupId != 1) {
             throw Exception("${startup.getAliasName()} dependencies is illegal")
         }
     }
